@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { CHROME_STORE_URL } from "@/config/constants";
 
 const steps = [
   {
@@ -101,7 +102,7 @@ const HowItWorks = () => {
             </p>
             <Button variant="hero" size="xl" asChild>
               <a
-                href="https://chrome.google.com/webstore"
+                href={CHROME_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -263,7 +264,7 @@ const HowItWorks = () => {
             </p>
             <Button variant="hero" size="xl" asChild>
               <a
-                href="https://chrome.google.com/webstore"
+                href={CHROME_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
               >

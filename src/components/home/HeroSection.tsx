@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Chrome, Play, Sparkles, Shield, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { CHROME_STORE_URL } from "@/config/constants";
 
 export const HeroSection = () => {
   return (
@@ -49,7 +50,7 @@ export const HeroSection = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
               <Button variant="hero" size="xl" asChild>
                 <a
-                  href="https://chrome.google.com/webstore"
+                  href={CHROME_STORE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="gap-3"

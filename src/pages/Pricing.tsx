@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Check, Crown, Zap, Sparkles, HelpCircle } from "lucide-react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { CHROME_STORE_URL } from "@/config/constants";
 import {
   Accordion,
   AccordionContent,
@@ -209,7 +210,7 @@ const Pricing = () => {
                   asChild
                 >
                   <a
-                    href="https://chrome.google.com/webstore"
+                    href={CHROME_STORE_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

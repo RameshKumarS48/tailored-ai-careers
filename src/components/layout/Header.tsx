@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CHROME_STORE_URL } from "@/config/constants";
 
 const navLinks = [
   { href: "/how-it-works", label: "How It Works" },
@@ -49,7 +50,7 @@ export const Header = () => {
           <div className="hidden lg:flex items-center gap-4">
             <Button variant="gradient" size="default" asChild>
               <a
-                href="https://chrome.google.com/webstore"
+                href={CHROME_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -95,7 +96,7 @@ export const Header = () => {
               ))}
               <Button variant="gradient" size="lg" className="mt-2" asChild>
                 <a
-                  href="https://chrome.google.com/webstore"
+                  href={CHROME_STORE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                 >

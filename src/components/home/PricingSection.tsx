@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Check, Sparkles, Zap, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { CHROME_STORE_URL } from "@/config/constants";
 
 const pricingPlans = [
   {
@@ -145,7 +146,7 @@ export const PricingSection = () => {
                 asChild
               >
                 <a
-                  href="https://chrome.google.com/webstore"
+                  href={CHROME_STORE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                 >

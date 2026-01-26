@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Chrome, ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CHROME_STORE_URL } from "@/config/constants";
 
 export const CTASection = () => {
   return (
@@ -34,7 +35,7 @@ export const CTASection = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button variant="hero" size="xl" asChild>
               <a
-                href="https://chrome.google.com/webstore"
+                href={CHROME_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="gap-3"
