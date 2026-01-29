@@ -20,7 +20,7 @@ const faqCategories = [
       },
       {
         question: "Is Resume Tailor really free to try?",
-        answer: "Yes! Every new user gets 3 free credits to try the extension. No credit card required.",
+        answer: "Yes! Every new user gets 5 free credits to try the extension. No credit card required.",
       },
       {
         question: "What browsers are supported?",

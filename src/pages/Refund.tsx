@@ -95,7 +95,7 @@ const Refund = () => {
               <ul className="space-y-3 text-muted-foreground">
                 <li className="flex items-start gap-3">
                   <span className="w-2 h-2 rounded-full bg-destructive mt-2 flex-shrink-0" />
-                  <span>Free trial credits (3 credits provided at signup)</span>
+                  <span>Free trial credits (5 credits provided at signup)</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="w-2 h-2 rounded-full bg-destructive mt-2 flex-shrink-0" />

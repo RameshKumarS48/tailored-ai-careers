@@ -19,7 +19,7 @@ export const CTASection = () => {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent border border-primary/20 mb-6">
             <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-primary">Start with 3 free credits</span>
+            <span className="text-sm font-medium text-primary">Start with 5 free credits</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-6">

@@ -8,10 +8,10 @@ const pricingPlans = [
   {
     name: "Free Trial",
     price: "0",
-    credits: 3,
+    credits: 5,
     description: "Try it out risk-free",
     features: [
-      "3 free resume generations",
+      "5 free resume generations",
       "All rewrite intensity levels",
       "PDF & DOCX downloads",
       "Works on all job sites",

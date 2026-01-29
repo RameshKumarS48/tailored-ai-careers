@@ -75,7 +75,7 @@ export const HeroSection = () => {
               </div>
               <div className="flex items-center gap-2">
                 <Zap className="w-4 h-4 text-primary" />
-                <span>3 Free Credits</span>
+                <span>5 Free Credits</span>
               </div>
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-secondary" />
