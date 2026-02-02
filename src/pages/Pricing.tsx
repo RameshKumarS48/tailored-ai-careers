@@ -28,7 +28,7 @@ const pricingPlans = [
   },
   {
     name: "Starter Pack",
-    price: "4.99",
+    price: "2.99",
     credits: 5,
     description: "Perfect for active job seekers",
     features: [
@@ -43,7 +43,7 @@ const pricingPlans = [
   },
   {
     name: "Pro Pack",
-    price: "8.99",
+    price: "4.99",
     credits: 10,
     description: "Best value for serious applicants",
     features: [
@@ -60,7 +60,7 @@ const pricingPlans = [
   },
   {
     name: "Power Pack",
-    price: "14.99",
+    price: "7.99",
     credits: 20,
     description: "For heavy job application periods",
     features: [
@@ -122,7 +122,7 @@ const pricingFaqs = [
   },
   {
     question: "How do I purchase credits?",
-    answer: "Credits can be purchased directly within the Chrome extension after signing in. We use Paddle for secure payment processing, supporting all major credit cards and currencies.",
+    answer: "Credits can be purchased directly within the Chrome extension after signing in. We use secure payment processing supporting all major credit cards.",
   },
   {
     question: "Is there a subscription option?",
