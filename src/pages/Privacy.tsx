@@ -59,7 +59,7 @@ const Privacy = () => {
                   <div>
                     <h3 className="text-lg font-semibold text-foreground mb-2">Account Information</h3>
                     <p className="leading-relaxed">
-                      We collect your email address and payment information (processed by Paddle) when you create an account or purchase credits.
+                      We collect your email address and payment information when you create an account or purchase credits.
                     </p>
                   </div>
                   <div>
@@ -125,7 +125,7 @@ const Privacy = () => {
               <div className="card-elevated p-8">
                 <h2 className="text-2xl font-bold text-foreground mb-4">AI Processing</h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  We use Claude AI (by Anthropic) to process your resume and job descriptions for tailoring. When you request a tailored resume, your data is sent securely to the AI for processing. The AI does not store your data after processing is complete.
+                  We use advanced AI to process your resume and job descriptions for tailoring. When you request a tailored resume, your data is sent securely to the AI for processing. The AI does not store your data after processing is complete.
                 </p>
               </div>
 
@@ -137,11 +137,11 @@ const Privacy = () => {
                 <ul className="space-y-3 text-muted-foreground">
                   <li className="flex items-start gap-3">
                     <span className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span><strong className="text-foreground">Paddle</strong> – for payment processing</span>
+                    <span><strong className="text-foreground">Payment Processor</strong> – for secure payment processing</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span><strong className="text-foreground">Anthropic (Claude AI)</strong> – for resume tailoring</span>
+                    <span><strong className="text-foreground">AI Provider</strong> – for resume tailoring</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />

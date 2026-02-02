@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 const faqs = [
   {
     question: "How does Resume Tailor work?",
-    answer: "Resume Tailor uses Claude AI to analyze job postings and intelligently tailor your resume to match the requirements. Simply upload your resume once, visit any job posting, and click to generate a customized version that highlights your most relevant experience.",
+    answer: "Resume Tailor uses advanced AI to analyze job postings and intelligently tailor your resume to match the requirements. Simply upload your resume once, visit any job posting, and click to generate a customized version that highlights your most relevant experience.",
   },
   {
     question: "What job sites does it work with?",

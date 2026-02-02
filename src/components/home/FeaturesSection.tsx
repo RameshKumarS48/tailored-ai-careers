@@ -12,7 +12,7 @@ const features = [
   {
     icon: Sparkles,
     title: "AI-Powered Personalization",
-    description: "Claude AI analyzes job requirements and intelligently tailors your resume to match key qualifications.",
+    description: "Our AI analyzes job requirements and intelligently tailors your resume to match key qualifications.",
   },
   {
     icon: MousePointerClick,

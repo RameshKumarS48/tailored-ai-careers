@@ -79,7 +79,7 @@ export const HeroSection = () => {
               </div>
               <div className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-secondary" />
-                <span>Powered by Claude AI</span>
+                <span>Powered by Advanced AI</span>
               </div>
             </div>
           </motion.div>

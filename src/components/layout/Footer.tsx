@@ -112,7 +112,7 @@ export const Footer = () => {
           <div className="flex items-center gap-4">
             <span className="text-xs text-muted-foreground flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
-              Powered by Claude AI
+              Powered by AI
             </span>
           </div>
         </div>
