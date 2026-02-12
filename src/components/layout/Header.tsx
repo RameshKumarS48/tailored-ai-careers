@@ -1,9 +1,11 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, FileText } from "lucide-react";
+import { Menu, X, FileText, LogIn, LogOut, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CHROME_STORE_URL } from "@/config/constants";
+import { isLoggedIn, getStoredUser, clearAuth, getToken } from "@/lib/auth";
+import { apiRequest } from "@/lib/api";
 
 const navLinks = [
   { href: "/how-it-works", label: "How It Works" },
@@ -14,6 +16,46 @@ const navLinks = [
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const [loggedIn, setLoggedIn] = useState(isLoggedIn());
+  const [credits, setCredits] = useState<number | null>(null);
+  const user = loggedIn ? getStoredUser() : null;
+
+  useEffect(() => {
+    setLoggedIn(isLoggedIn());
+  }, [location]);
+
+  useEffect(() => {
+    if (!loggedIn) {
+      setCredits(null);
+      return;
+    }
+
+    const fetchCredits = async () => {
+      try {
+        const token = getToken();
+        const data = await apiRequest<{ credits_remaining: number }>(
+          "/credits/balance",
+          "GET",
+          undefined,
+          token
+        );
+        setCredits(data.credits_remaining);
+      } catch {
+        // Non-critical
+      }
+    };
+
+    fetchCredits();
+  }, [loggedIn]);
+
+  const handleLogout = () => {
+    clearAuth();
+    setLoggedIn(false);
+    setCredits(null);
+    setIsOpen(false);
+    navigate("/");
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-lg border-b border-border">
@@ -47,16 +89,50 @@ export const Header = () => {
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden lg:flex items-center gap-4">
-            <Button variant="gradient" size="default" asChild>
-              <a
-                href={CHROME_STORE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Add to Chrome — Free
-              </a>
-            </Button>
+          <div className="hidden lg:flex items-center gap-3">
+            {loggedIn ? (
+              <>
+                {credits !== null && (
+                  <Link
+                    to="/pricing"
+                    className="flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+                  >
+                    <CreditCard className="w-4 h-4" />
+                    {credits} credits
+                  </Link>
+                )}
+                <span className="text-sm text-muted-foreground truncate max-w-[160px]">
+                  {user?.email}
+                </span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleLogout}
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  <LogOut className="w-4 h-4 mr-1" />
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/login" className="text-muted-foreground hover:text-foreground">
+                    <LogIn className="w-4 h-4 mr-1" />
+                    Sign In
+                  </Link>
+                </Button>
+                <Button variant="gradient" size="default" asChild>
+                  <a
+                    href={CHROME_STORE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Add to Chrome — Free
+                  </a>
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -94,15 +170,52 @@ export const Header = () => {
                   {link.label}
                 </Link>
               ))}
-              <Button variant="gradient" size="lg" className="mt-2" asChild>
-                <a
-                  href={CHROME_STORE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Add to Chrome — Free
-                </a>
-              </Button>
+
+              {loggedIn ? (
+                <>
+                  {credits !== null && (
+                    <Link
+                      to="/pricing"
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center gap-2 text-base font-medium text-primary py-2"
+                    >
+                      <CreditCard className="w-4 h-4" />
+                      {credits} credits
+                    </Link>
+                  )}
+                  <div className="text-sm text-muted-foreground py-1 truncate">
+                    {user?.email}
+                  </div>
+                  <Button
+                    variant="heroOutline"
+                    size="lg"
+                    className="mt-2"
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    onClick={() => setIsOpen(false)}
+                    className="text-base font-medium py-2 text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    Sign In
+                  </Link>
+                  <Button variant="gradient" size="lg" className="mt-2" asChild>
+                    <a
+                      href={CHROME_STORE_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Add to Chrome — Free
+                    </a>
+                  </Button>
+                </>
+              )}
             </nav>
           </motion.div>
         )}

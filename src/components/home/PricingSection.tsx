@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Check, Sparkles, Zap, Crown } from "lucide-react";
+import { Check, Sparkles, Zap, Crown, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CHROME_STORE_URL } from "@/config/constants";
+import { isLoggedIn, getToken } from "@/lib/auth";
+import { apiRequest } from "@/lib/api";
 
 const pricingPlans = [
   {
@@ -19,6 +22,7 @@ const pricingPlans = [
     cta: "Get Started Free",
     ctaVariant: "heroOutline" as const,
     popular: false,
+    isFree: true,
   },
   {
     name: "Starter Pack",
@@ -34,6 +38,7 @@ const pricingPlans = [
     cta: "Get 5 Credits",
     ctaVariant: "heroOutline" as const,
     popular: false,
+    isFree: false,
   },
   {
     name: "Pro Pack",
@@ -51,6 +56,7 @@ const pricingPlans = [
     ctaVariant: "hero" as const,
     popular: true,
     icon: Crown,
+    isFree: false,
   },
   {
     name: "Power Pack",
@@ -67,10 +73,41 @@ const pricingPlans = [
     cta: "Get 20 Credits",
     ctaVariant: "heroOutline" as const,
     popular: false,
+    isFree: false,
   },
 ];
 
 export const PricingSection = () => {
+  const navigate = useNavigate();
+  const [loadingPack, setLoadingPack] = useState<number | null>(null);
+
+  const handlePurchase = async (credits: number) => {
+    if (!isLoggedIn()) {
+      navigate(`/login?redirect=/pricing&credits=${credits}`);
+      return;
+    }
+
+    setLoadingPack(credits);
+    try {
+      const token = getToken();
+      const data = await apiRequest<{ checkout_url: string; payment_link: string }>(
+        "/credits/checkout",
+        "POST",
+        { credits },
+        token
+      );
+      const checkoutUrl = data.checkout_url || data.payment_link;
+      if (checkoutUrl) {
+        window.location.href = checkoutUrl;
+      }
+    } catch {
+      // On error, fall back to the dedicated pricing page
+      navigate("/pricing");
+    } finally {
+      setLoadingPack(null);
+    }
+  };
+
   return (
     <section className="section-padding bg-background" id="pricing">
       <div className="container-wide mx-auto">
@@ -139,20 +176,39 @@ export const PricingSection = () => {
                 ))}
               </ul>
 
-              <Button
-                variant={plan.ctaVariant}
-                size="lg"
-                className="w-full"
-                asChild
-              >
-                <a
-                  href={CHROME_STORE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
+              {plan.isFree ? (
+                <Button
+                  variant={plan.ctaVariant}
+                  size="lg"
+                  className="w-full"
+                  asChild
                 >
-                  {plan.cta}
-                </a>
-              </Button>
+                  <a
+                    href={CHROME_STORE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {plan.cta}
+                  </a>
+                </Button>
+              ) : (
+                <Button
+                  variant={plan.ctaVariant}
+                  size="lg"
+                  className="w-full"
+                  onClick={() => handlePurchase(plan.credits)}
+                  disabled={loadingPack === plan.credits}
+                >
+                  {loadingPack === plan.credits ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    plan.cta
+                  )}
+                </Button>
+              )}
             </motion.div>
           ))}
         </div>

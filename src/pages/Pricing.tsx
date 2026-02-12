@@ -1,8 +1,12 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Check, Crown, Zap, Sparkles, HelpCircle } from "lucide-react";
+import { Check, Crown, Zap, Sparkles, HelpCircle, Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { CHROME_STORE_URL } from "@/config/constants";
+import { isLoggedIn, getToken } from "@/lib/auth";
+import { apiRequest } from "@/lib/api";
 import {
   Accordion,
   AccordionContent,
@@ -25,6 +29,7 @@ const pricingPlans = [
     cta: "Get Started Free",
     variant: "heroOutline" as const,
     popular: false,
+    isFree: true,
   },
   {
     name: "Starter Pack",
@@ -40,6 +45,7 @@ const pricingPlans = [
     cta: "Get 5 Credits",
     variant: "heroOutline" as const,
     popular: false,
+    isFree: false,
   },
   {
     name: "Pro Pack",
@@ -57,6 +63,7 @@ const pricingPlans = [
     variant: "hero" as const,
     popular: true,
     icon: Crown,
+    isFree: false,
   },
   {
     name: "Power Pack",
@@ -73,6 +80,7 @@ const pricingPlans = [
     cta: "Get 20 Credits",
     variant: "heroOutline" as const,
     popular: false,
+    isFree: false,
   },
 ];
 
@@ -122,7 +130,7 @@ const pricingFaqs = [
   },
   {
     question: "How do I purchase credits?",
-    answer: "Credits can be purchased directly within the Chrome extension after signing in. We use secure payment processing supporting all major credit cards.",
+    answer: "You can purchase credits right here on this page or within the Chrome extension. Sign in, pick a pack, and complete secure checkout via DodoPayments.",
   },
   {
     question: "Is there a subscription option?",
@@ -131,6 +139,39 @@ const pricingFaqs = [
 ];
 
 const Pricing = () => {
+  const navigate = useNavigate();
+  const [loadingPack, setLoadingPack] = useState<number | null>(null);
+  const [error, setError] = useState("");
+
+  const handlePurchase = async (credits: number) => {
+    setError("");
+
+    if (!isLoggedIn()) {
+      navigate(`/login?redirect=/pricing&credits=${credits}`);
+      return;
+    }
+
+    setLoadingPack(credits);
+    try {
+      const token = getToken();
+      const data = await apiRequest<{ checkout_url: string; payment_link: string }>(
+        "/credits/checkout",
+        "POST",
+        { credits },
+        token
+      );
+      const checkoutUrl = data.checkout_url || data.payment_link;
+      if (checkoutUrl) {
+        window.location.href = checkoutUrl;
+      }
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Checkout failed";
+      setError(message);
+    } finally {
+      setLoadingPack(null);
+    }
+  };
+
   return (
     <Layout>
       {/* Hero */}
@@ -150,6 +191,15 @@ const Pricing = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* Error banner */}
+      {error && (
+        <div className="container-wide mx-auto px-4 -mb-4 mt-4">
+          <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-sm text-destructive text-center">
+            {error}
+          </div>
+        </div>
+      )}
 
       {/* Pricing Cards */}
       <section className="section-padding bg-background">
@@ -203,20 +253,39 @@ const Pricing = () => {
                   ))}
                 </ul>
 
-                <Button
-                  variant={plan.variant}
-                  size="lg"
-                  className="w-full"
-                  asChild
-                >
-                  <a
-                    href={CHROME_STORE_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                {plan.isFree ? (
+                  <Button
+                    variant={plan.variant}
+                    size="lg"
+                    className="w-full"
+                    asChild
                   >
-                    {plan.cta}
-                  </a>
-                </Button>
+                    <a
+                      href={CHROME_STORE_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {plan.cta}
+                    </a>
+                  </Button>
+                ) : (
+                  <Button
+                    variant={plan.variant}
+                    size="lg"
+                    className="w-full"
+                    onClick={() => handlePurchase(plan.credits)}
+                    disabled={loadingPack === plan.credits}
+                  >
+                    {loadingPack === plan.credits ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      plan.cta
+                    )}
+                  </Button>
+                )}
               </motion.div>
             ))}
           </div>
